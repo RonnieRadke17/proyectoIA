@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         User::factory(100)->create();
+         /* User::factory(100)->create();
 
         $categories = [
             'Entradas',
@@ -95,7 +97,48 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $data) {
             Product::create($data);
+        } */
+
+        $now = now();
+
+        // 10 productos "populares": muchas vistas + buenos likes
+        foreach (range(1, 10) as $productId) {
+            foreach (range(1, 20) as $userId) {
+                DB::table('product_user')->insert([
+                    'id_user' => $userId,
+                    'id_product' => $productId,
+                    'recommendation' => rand(0, 100) < 80 ? 1 : 0, // 80% likes
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+            }
         }
 
+        // 5 productos "exploración": pocas vistas, pero buen ratio
+        foreach (range(11, 15) as $productId) {
+            foreach (range(21, 25) as $userId) {
+                DB::table('product_user')->insert([
+                    'id_user' => $userId,
+                    'id_product' => $productId,
+                    'recommendation' => rand(0, 100) < 90 ? 1 : 0, // casi todos likes
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+            }
+        }
+
+        // 10 productos "normales": medias vistas y calificaciones variables
+        foreach (range(16, 25) as $productId) {
+            foreach (range(26, 35) as $userId) {
+                DB::table('product_user')->insert([
+                    'id_user' => $userId,
+                    'id_product' => $productId,
+                    'recommendation' => rand(0, 1),
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+            }
+        }
+        
     }
 }
