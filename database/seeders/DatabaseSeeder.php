@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         /* User::factory(100)->create();
+          User::factory(100)->create();
 
         $categories = [
             'Entradas',
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $data) {
             Product::create($data);
-        } */
+        } 
 
         $now = now();
 
